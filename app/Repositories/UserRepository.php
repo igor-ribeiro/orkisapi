@@ -59,6 +59,13 @@ class UserRepository extends BaseRepository
         return $this->delete($user);
     }
 
+    public function getUsernameCount($username)
+    {
+        $regex = "^{$username}?-?[0-9]*";
+        
+        return $this->query()->where('username', 'regexp', $regex)->count();
+    }
+
     public function generateData($request)
     {
         $request->merge([
@@ -71,7 +78,15 @@ class UserRepository extends BaseRepository
 
     public function generateUsername($firstName, $lastName)
     {
-        return str_slug($firstName . ' ' . $lastName);
+        $username = str_slug($firstName . ' ' . $lastName);
+
+        $usernameCount = $this->getUsernameCount($username);
+ 
+        if ($usernameCount > 0) {
+            $username .= '-' . ($usernameCount + 1);
+        }
+
+        return $username;
     }
 
     public function generatePassword($password)
