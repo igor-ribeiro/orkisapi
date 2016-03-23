@@ -149,6 +149,11 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        /**
+         * Libs
+         */
+        Vinkla\Pusher\PusherServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
