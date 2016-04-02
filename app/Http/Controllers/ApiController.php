@@ -29,11 +29,12 @@ class ApiController extends Controller {
 
     public function respondBadRequest($data)
     {
-        return $this->respond([ 'errors' => $data ], Response::HTTP_BAD_REQUEST);
+        return $this->respond([ 'errors' => $data, ], Response::HTTP_BAD_REQUEST);
     }
 
     protected function respond($data, $code = Response::HTTP_OK)
     {
+        $data['status'] = $code;
         return response()->json($data, $code);
     }
 }
