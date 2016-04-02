@@ -2,6 +2,8 @@
 
 namespace OrkisApp\Http\Controllers;
 
+use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use OrkisApp\Http\Requests\UserRequest;
 
@@ -86,5 +88,29 @@ class UsersController extends ApiController
         $nurseries = $this->repository('Nursery')->allFromUserByUsername($username);
 
         return response()->json([ 'data' => $nurseries ]);
+     }
+
+     public function login(Request $request)
+     {
+        $credentials = [
+            'username' => $request->get('username'),
+            'password' => $request->get('password')
+        ];
+
+        $user = $this->repository('User')->findByUsername($request->get('username'));
+
+        if (Auth::attempt($credentials)) {
+            $user = $this->repository('User')->updateByUsername($user->username, [
+                'token' => md5($user->username . Carbon::now()),
+                'token_expires_at' => Carbon::now()->addDay(),
+            ]);
+            
+            return $this->respondSuccess([
+                'user' => $user,
+                'token' => $user->token,
+            ]);
+        }
+
+        return $this->respondBadRequest([ 'message' => 'Invalid credentials' ]);
      }
 }
