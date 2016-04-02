@@ -18,7 +18,7 @@ class UserRequest extends Request
             'first_name' => 'required',
             'last_name'  => 'required',
             'email'      => 'required',
-            'password'   => 'required',
+            'password'   => 'required|min:4',
         ],
     ];
 
