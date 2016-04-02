@@ -2,8 +2,13 @@
 
 namespace OrkisApp\Models;
 
-class Nursery extends BaseModel
+use OrkisApp\Models\Traits\CreatedAt;
+use Illuminate\Database\Eloquent\Model;
+
+class Nursery extends Model
 {
+    use CreatedAt;
+
     /**
      * @var array
      */
