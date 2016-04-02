@@ -47,11 +47,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        if ($e instanceof NotFoundHttpException || $e instanceof ModelNotFoundException) {
+        if ($e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException) {
             return response()->json([
                 'errors' => [
                     [ 'message' => 'Resource not found' ],
-                ]
+                ],
+                'status' => 404,
             ], 404);
         }
 
@@ -60,9 +61,10 @@ class Handler extends ExceptionHandler
                 'errors' => [
                     [ 'message' => 'Method not allowed' ]
                 ],
+                'status' => 405,
             ], 405);
         }
-        
+
         return parent::render($request, $e);
     }
 }
