@@ -2,10 +2,12 @@
 
 namespace OrkisApp\Models;
 
+use OrkisApp\Models\Traits\CreatedAt;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends BaseModel
+class User extends Authenticatable
 {
+    use CreatedAt;
     /**
      * @var array
      */
