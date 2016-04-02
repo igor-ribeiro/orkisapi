@@ -153,6 +153,7 @@ return [
          * Libs
          */
         Vinkla\Pusher\PusherServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
 
         /*
          * Application Service Providers...
