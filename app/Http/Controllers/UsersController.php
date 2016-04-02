@@ -90,6 +90,12 @@ class UsersController extends ApiController
         return response()->json([ 'data' => $nurseries ]);
      }
 
+     /**
+      * Return an user and a  token based on the credentials given
+      *
+      * @param Request $request
+      * @return \Illuminate\Http\Response
+      */
      public function login(Request $request)
      {
         $credentials = [
