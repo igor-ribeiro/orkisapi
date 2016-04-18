@@ -11,7 +11,7 @@ class UserRequest extends Request
         'all' => [
             'first_name' => 'min:3|max:64|alpha',
             'last_name'  => 'min:3|max:64|alpha',
-            'email'      => 'email|max:128|unique:users',
+            'email'      => 'email|max:128',
         ],
 
         'post' => [
