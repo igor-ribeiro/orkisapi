@@ -48,6 +48,10 @@ class UserRepository extends BaseRepository
     public function updateByUsername($username, $data)
     {
         $user = $this->findByUsername($username);
+        
+        if (isset($data['password'])) {
+            $data['password'] = $this->generatePassword($data['password']);
+        }    
 
         return $this->update($user, $data);
     }
