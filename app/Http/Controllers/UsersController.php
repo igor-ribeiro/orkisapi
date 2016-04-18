@@ -3,6 +3,7 @@
 namespace OrkisApp\Http\Controllers;
 
 use Auth;
+use Validator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use OrkisApp\Http\Requests\UserRequest;
@@ -29,6 +30,14 @@ class UsersController extends ApiController
      */
     public function store(UserRequest $request)
     {
+        $validation = Validator::make($request->toArray(), [
+            'email' => 'unique:users',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([ 'errors' => $validation->errors(), 422]);
+        }
+
         $userData = $this->repository('User')->generateData($request);
 
         $user = $this->repository('User')->create($userData);
@@ -59,7 +68,15 @@ class UsersController extends ApiController
      */
     public function update(UserRequest $request, $username)
     {
-        $user = $this->repository('User')->updateByUsername($username, $request->all());
+        Validator::make($request->toArray(), [
+            'email' => 'unique:users,email,NULL,id,username,' . $username,
+        ]);
+
+        $data = empty($request->get('password'))
+            ? $request->except([ 'password' ])
+            : $request->all();
+
+        $user = $this->repository('User')->updateByUsername($username, $data);
 
         return response()->json([ 'data' => $user ], 202);
     }
