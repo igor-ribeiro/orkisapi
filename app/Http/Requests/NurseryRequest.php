@@ -17,7 +17,7 @@ class NurseryRequest extends Request
         'post' => [
             'username' => 'required',
             'name'     => 'required',
-            'document' => 'required',
+            'document' => 'required|unique:nurseries',
         ]
     ];
 
