@@ -20,7 +20,7 @@ class UserRepository extends BaseRepository
 
     protected function findWithNurseryBuilder($id)
     {
-        return $this->query()->findOrFail($id)->with('nursery');
+        return $this->query()->findOrFail($id)->load('nurseries');
     }
 
     public function findWithNursery($id)
@@ -42,7 +42,7 @@ class UserRepository extends BaseRepository
 
     public function findByUsernameWithNursery($username)
     {
-        return $this->findByUsernameBuilder($username)->with('nursery')->firstOrFail();
+        return $this->findByUsernameBuilder($username)->firstOrFail()->load('nurseries');
     }
 
     public function updateByUsername($username, $data)
