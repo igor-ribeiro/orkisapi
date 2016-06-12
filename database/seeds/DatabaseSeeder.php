@@ -7,6 +7,7 @@ class DatabaseSeeder extends Seeder
     protected $tables = [
         'users',
         'nurseries',
+        'orchids',
     ];
 
     /**
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->clear();
 
         $this->call(UserTableSeeder::class);
+        $this->call(OrchidTableSeeder::class);
     }
 
     protected function clear()
