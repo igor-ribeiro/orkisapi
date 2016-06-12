@@ -2,8 +2,10 @@
 
 use OrkisApp\Models\User;
 use OrkisApp\Models\Nursery;
+use OrkisApp\Models\Orchid;
 use Faker\Provider\pt_BR\Person;
 use Faker\Provider\pt_BR\Company;
+use Faker\Provider\pt_BR\Address;
 
 $factory->define(User::class, function (Faker\Generator $faker) {
     $faker->addProvider(new Person($faker));
@@ -29,5 +31,22 @@ $factory->define(Nursery::class, function (Faker\Generator $faker) {
     return [
         'name'     => $faker->company,
         'document' => $faker->cnpj(false),
+    ];
+});
+
+$factory->define(Orchid::class, function (Faker\Generator $faker) {
+    $faker->addProvider(new Address($faker));
+
+    $name = $faker->name;
+    $hash = base_convert(md5($name . date('ymdhis')), 10, 36);
+
+    return [
+        'name' => $name,
+        'scientific_name' => $name,
+        'image' => 'http://placehold.it/450x450',
+        'hash' => $hash,
+        'origin' => $faker->country,
+        'description' => $faker->realText(200, 2),
+        'instructions' => $faker->realText(200, 2),
     ];
 });
