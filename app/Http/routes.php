@@ -13,4 +13,6 @@ Route::group([ 'prefix' => 'v1', 'middleware' => 'cors' ], function () {
         'as'   => 'v1.users.nurseries',
         'uses' => 'UsersController@nurseries',
     ]);
+
+    Route::resource('orchids', 'OrchidsController', [ 'except' => $exceptRoutes ]);
 });
