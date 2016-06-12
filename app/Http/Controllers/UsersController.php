@@ -53,7 +53,7 @@ class UsersController extends ApiController
      */
     public function show($username)
     {
-        $user = $this->repository('User')->findByUsername($username);
+        $user = $this->repository('User')->findByUsernameWithNursery($username);
         return response()->json([ 'data' => $user ]);
 
         return response()->json([ 'data' => $user ]);
@@ -123,8 +123,8 @@ class UsersController extends ApiController
         $user = $this->repository('User')->findByUsername($request->get('username'));
 
         if (Auth::attempt($credentials)) {
-            $user = $this->repository('User')->updateByUsername($user->username, [
-                'token' => md5($user->username . Carbon::now()),
+            $user = $this->repository('User')->updateByUsername($credentials['username'], [
+                'token' => md5($credentials['username'] . Carbon::now()),
                 'token_expires_at' => Carbon::now()->addDay(),
             ]);
             
