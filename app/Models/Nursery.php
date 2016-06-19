@@ -32,11 +32,16 @@ class Nursery extends Model
 
     /**
      * User relationship
-     * 
+     *
      * @return OrkisApp\Models\User
      */
     public function user()
     {
         return $this->belongsTo('OrkisApp\Models\User');
+    }
+
+    public function orchids()
+    {
+        return $this->belongsToMany('OrkisApp\Models\Orchid', 'nurseries_orchids', 'nursery_id', 'orchid_id');
     }
 }
