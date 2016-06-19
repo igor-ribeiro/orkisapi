@@ -120,14 +120,12 @@ class UsersController extends ApiController
             'password' => $request->get('password')
         ];
 
-        $user = $this->repository('User')->findByUsername($request->get('username'));
-
         if (Auth::attempt($credentials)) {
             $user = $this->repository('User')->updateByUsername($credentials['username'], [
                 'token' => md5($credentials['username'] . Carbon::now()),
                 'token_expires_at' => Carbon::now()->addDay(),
             ]);
-            
+
             return $this->respondSuccess([
                 'user' => $user,
                 'token' => $user->token,
