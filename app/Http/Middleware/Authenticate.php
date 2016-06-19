@@ -17,12 +17,14 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->guest()) {
-            if ($request->ajax() || $request->wantsJson()) {
-                return response('Unauthorized.', 401);
-            } else {
-                return redirect()->guest('login');
-            }
+        if (! $request->has('_token')) {
+            return response([ 'errors' => 'Unauthorized' ], 401);
+        }
+
+        $user = app('OrkisApp\Repositories\UserRepository')->findByToken($request->get('_token'));
+
+        if (! $user) {
+            return response([ 'errors' => 'Invalid token' ], 401);
         }
 
         return $next($request);
