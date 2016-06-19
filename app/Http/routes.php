@@ -16,4 +16,5 @@ Route::group([ 'prefix' => 'v1', 'middleware' => 'cors' ], function () {
     ]);
 
     Route::resource('orchids', 'OrchidsController', [ 'except' => $exceptRoutes ]);
+    Route::get('orchids/{hash}/{nurseryDocument}', 'OrchidsController@hasNursery');
 });

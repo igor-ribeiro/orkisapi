@@ -71,4 +71,13 @@ class OrchidsController extends ApiController
     {
         //
     }
+
+    public function hasNursery($orchidHash, $nurseryDocument)
+    {
+        $orchid = $this->repository('Orchid')->findByHash($orchidHash);
+
+        $has = count($orchid->nurseries()->where('document', $nurseryDocument)->get()) > 0;
+
+        return $this->respondSuccess([ 'data' => $has ]);
+    }
 }
