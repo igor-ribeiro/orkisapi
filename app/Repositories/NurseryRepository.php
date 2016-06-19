@@ -51,4 +51,11 @@ class NurseryRepository extends BaseRepository
 
         return $this->delete($nursery);
     }
+
+    public function hasOrchid($nurseryDocument, $orchidHash)
+    {
+        $nursery = $this->findByDocument($nurseryDocument);
+
+        return count($nursery->orchids()->where('hash', $orchidHash)->get()) > 0;
+    }
 }
