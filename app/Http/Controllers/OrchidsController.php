@@ -15,7 +15,11 @@ class OrchidsController extends ApiController
      */
     public function index()
     {
-        $orchids = $this->repository('Orchid')->all();
+        if (request()->has('with_nurseries')) {
+            $orchids = $this->repository('Orchid')->allWithNurseries();
+        } else {
+            $orchids = $this->repository('Orchid')->all();
+        }
 
         return $this->respondSuccess([ 'data' => $orchids ]);
     }
@@ -42,7 +46,7 @@ class OrchidsController extends ApiController
      */
     public function show($hash)
     {
-        $orchid = $this->repository('Orchid')->findByHash($hash);
+        $orchid = $this->repository('Orchid')->findByHashWithNurseries($hash);
 
         return $this->respondSuccess([ 'data' => $orchid ]);
     }
