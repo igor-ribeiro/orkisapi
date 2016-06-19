@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
+use Illuminate\Support\Facades\Storage;
+
 class DatabaseSeeder extends Seeder
 {
     protected $tables = [
@@ -32,5 +34,7 @@ class DatabaseSeeder extends Seeder
         }
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+        Storage::disk('public')->deleteDirectory('codes');
     }
 }
