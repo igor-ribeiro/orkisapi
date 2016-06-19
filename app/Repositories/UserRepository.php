@@ -7,7 +7,7 @@ class UserRepository extends BaseRepository
     protected $modelClass = 'User';
 
     protected function allWithNurseryBuilder()
-    { 
+    {
         return $this->query()->with('nursery');
     }
 
@@ -26,7 +26,7 @@ class UserRepository extends BaseRepository
     public function findWithNursery($id)
     {
         $query = $this->findWithNurseryBuilder();
-        
+
         return $this->execute($query);
     }
 
@@ -47,11 +47,11 @@ class UserRepository extends BaseRepository
 
     public function updateByUsername($username, $data)
     {
-        $user = $this->findByUsername($username);
-        
+        $user = $this->findByUsernameWithNursery($username);
+
         if (isset($data['password'])) {
             $data['password'] = $this->generatePassword($data['password']);
-        }    
+        }
 
         return $this->update($user, $data);
     }
@@ -63,10 +63,15 @@ class UserRepository extends BaseRepository
         return $this->delete($user);
     }
 
+    public function findByToken($token)
+    {
+        return $this->query()->where('token', $token)->first();
+    }
+
     public function getUsernameCount($username)
     {
         $regex = "^{$username}?-?[0-9]*";
-        
+
         return $this->query()->where('username', 'regexp', $regex)->count();
     }
 
@@ -85,7 +90,7 @@ class UserRepository extends BaseRepository
         $username = str_slug($firstName . ' ' . $lastName);
 
         $usernameCount = $this->getUsernameCount($username);
- 
+
         if ($usernameCount > 0) {
             $username .= '-' . ($usernameCount + 1);
         }
