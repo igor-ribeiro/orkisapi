@@ -27,14 +27,14 @@ class NurseriesController extends ApiController
     public function store(NurseryRequest $request)
     {
         $user = $this->repository('User')->findByUsername($request->get('username'));
-        
+
         $nursery = $this->repository('Nursery')->create($request->except('username'));
 
         if (! $user->nurseries()->save($nursery)) {
             return $this->respondBadRequest([ 'message' => 'Could not store the entity' ]);
         }
 
-        return $this->respondCreated([ 'data' => $request ]);
+        return $this->respondCreated([ 'data' => $nursery ]);
     }
 
     /**
@@ -75,5 +75,15 @@ class NurseriesController extends ApiController
         $nursery = $this->repository('Nursery')->deleteByDocument($document);
 
         return $this->respondSuccess([ 'data' => $nursery ]);
+    }
+
+    public function addOrchid($document, $orchidHash)
+    {
+        $nursery = $this->repository('Nursery')->findByDocument($document);
+        $orchid = $this->repository('Orchid')->findByHash($orchidHash);
+
+        $nursery->orchids()->save($orchid);
+
+        return $this->respondSuccess([ 'data' => $document . ':' . $orchidHash ]);
     }
 }
