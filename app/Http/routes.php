@@ -5,6 +5,7 @@ Route::group([ 'prefix' => 'v1', 'middleware' => 'cors' ], function () {
 
     Route::resource('nurseries', 'NurseriesController', ['except' => $exceptRoutes ]);
     Route::post('nurseries/{document}/{orchidHash}', 'NurseriesController@addOrchid');
+    Route::get('nurseries/available-to-orchid/{username}/{orchidHash}', 'NurseriesController@getAvailableToOrchid');
 
     Route::post('users/login', 'UsersController@login');
 

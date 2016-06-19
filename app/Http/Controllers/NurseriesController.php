@@ -86,4 +86,18 @@ class NurseriesController extends ApiController
 
         return $this->respondSuccess([ 'data' => $document . ':' . $orchidHash ]);
     }
+
+    public function getAvailableToOrchid($username, $orchidHash)
+    {
+        $user = $this->repository('User')->findByUsername($username);
+        $nurseries = [];
+
+        foreach ($user->nurseries as $nursery) {
+            if (! $this->repository('Nursery')->hasOrchid($nursery->document, $orchidHash)) {
+                $nurseries[] = $nursery;
+            }
+        }
+
+        return $this->respondSuccess([ 'data' => $nurseries ]);
+    }
 }
