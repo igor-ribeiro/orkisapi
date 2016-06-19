@@ -2,6 +2,7 @@
 
 namespace OrkisApp\Http\Controllers;
 
+use Storage;
 use OrkisApp\Http\Requests\NurseryRequest;
 
 class NurseriesController extends ApiController
@@ -84,7 +85,14 @@ class NurseriesController extends ApiController
 
         $nursery->orchids()->save($orchid);
 
-        return $this->respondSuccess([ 'data' => $document . ':' . $orchidHash ]);
+        $filename = 'codes/' . $document . '/' . $orchidHash . '.png';
+
+        Storage::disk('public')->put(
+            $filename,
+            file_get_contents('https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $document . ':' . $orchidHash)
+        );
+
+        return $this->respondSuccess([ 'data' => $filename ]);
     }
 
     public function getAvailableToOrchid($username, $orchidHash)
