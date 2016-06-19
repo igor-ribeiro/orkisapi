@@ -89,10 +89,14 @@ class NurseriesController extends ApiController
 
         Storage::disk('public')->put(
             $filename,
-            file_get_contents('https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $document . ':' . $orchidHash)
+            file_get_contents('https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . $document . ':' . $orchidHash)
         );
 
-        return $this->respondSuccess([ 'data' => $filename ]);
+        return $this->respondSuccess([ 'data' => [
+            'filename' => $filename,
+            'document' => $document,
+            'hash' => $orchidHash,
+        ] ]);
     }
 
     public function getAvailableToOrchid($username, $orchidHash)
