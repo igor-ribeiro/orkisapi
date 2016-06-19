@@ -16,6 +16,11 @@ class OrchidRepository extends BaseRepository
         return $this->findByHashBuilder($hash)->firstOrFail();
     }
 
+    public function findByHashWithNurseries($hash)
+    {
+        return $this->findByHashBuilder($hash)->with('nurseries')->firstOrFail();
+    }
+
     public function updateByHash($hash, $data)
     {
         $orchid = $this->findByHash($hash);
@@ -34,6 +39,13 @@ class OrchidRepository extends BaseRepository
 
     public function generateHash($name)
     {
-        return base_convert(md5($name . date('ymdhis')), 10, 36);       
+        return base_convert(md5($name . date('ymdhis')), 10, 36);
+    }
+
+    public function allWithNurseries()
+    {
+        $orchids = $this->query()->with('nurseries')->paginate(config('app.per_page'));
+
+        return $orchids;
     }
 }
