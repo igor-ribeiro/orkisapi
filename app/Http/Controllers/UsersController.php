@@ -115,6 +115,8 @@ class UsersController extends ApiController
       */
      public function login(Request $request)
      {
+        $user = $this->repository('User')->findByUsername($request->get('username'));
+
         $credentials = [
             'username' => $request->get('username'),
             'password' => $request->get('password')
