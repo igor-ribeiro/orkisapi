@@ -36,9 +36,7 @@ class UserTableSeeder extends Seeder
         ];
 
         foreach ($users as $userData) {
-            factory(User::class)->create($userData)->each(function ($user) {
-                factory(Nursery::class)->create([ 'user_id' => $user->id ]);
-            });
+            factory(User::class)->create($userData);
         }
     }
 }
